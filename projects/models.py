@@ -27,15 +27,17 @@ class Project(models.Model):
     start_date = models.DateField()
     due_date = models.DateField()
 
-    assign_staff = models.ManyToManyField(
+    assigned_staff = models.ManyToManyField(
         User,
-        blank=True
+        blank=True,
+        related_name='assigned_projects'
     )
 
     created_by = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='created_projects'
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
