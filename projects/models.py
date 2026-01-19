@@ -21,7 +21,7 @@ class Project(models.Model):
     status = models.CharField(
         max_length=20,
         choices=STATUS_ChOICES,
-        deafault='pending'
+        default='pending'
     )
 
     start_date = models.DateField()
