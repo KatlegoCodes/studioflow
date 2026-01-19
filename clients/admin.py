@@ -3,6 +3,6 @@ from .models import Client
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ('user', 'email', 'company', 'created_at')
+    list_display = ('name', 'email', 'company', 'created_at')
     search_fields = ('name', 'email', 'company')
-    list_filter = ('created_at')
+    list_filter = ('created_at',)
