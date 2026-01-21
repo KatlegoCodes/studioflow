@@ -1,5 +1,5 @@
 
-from django.contrib.auth.models import user_passes_test
+from django.contrib.auth.decorators import user_passes_test
 from .utils import is_admin, is_staff
 
 def admin_required(view_func):

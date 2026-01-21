@@ -6,13 +6,6 @@ from django.contrib import messages
 from .models import Client
 from .forms import ClientForm
 
-
-
-@login_required
-@admin_required
-def client_create(request):
-    return render(request, 'clients/client_form.html')
-
 @login_required
 @admin_required
 def client_list(request):
@@ -30,11 +23,14 @@ def client_create(request):
             client.save()
             messages.success(request, 'Client created successfully!')
             return redirect('client_list')
+        else:
+            # Form has errors - show them to the user
+            messages.error(request, 'Please correct the errors below.')
     else:
         form = ClientForm()
-        messages.error(request, 'Please correct the errors below.')
+        # Don't show error message on initial GET request
 
-    return render(request, 'clients/client_form.html', {'form', form})
+    return render(request, 'clients/client_form.html', {'form': form})  # Fixed: colon not comma
 
 @login_required
 @admin_required
@@ -44,14 +40,17 @@ def client_detail(request, pk):
 
 @login_required
 @admin_required
-def client_update(request,pk):
+def client_update(request, pk):
     client = get_object_or_404(Client, pk=pk)
 
     if request.method == 'POST':
         form = ClientForm(request.POST, instance=client)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Client updated successfully!')
             return redirect('client_detail', pk=client.pk)
+        else:
+            messages.error(request, 'Please correct the errors below.')
     else:
         form = ClientForm(instance=client)
 
@@ -64,6 +63,7 @@ def client_delete(request, pk):
 
     if request.method == 'POST':
         client.delete()
+        messages.success(request, 'Client deleted successfully!')
         return redirect('client_list')
     
-    return render(request, 'clients/client_confirm_delete.html', {'client', client})
+    return render(request, 'clients/client_confirm_delete.html', {'client': client})
