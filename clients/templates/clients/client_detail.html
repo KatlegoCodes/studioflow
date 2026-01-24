@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block content %}
+<h2>{{ client.name }}</h2>
+
+<ul>
+  <li>Email: {{ client.email|default:"-" }}</li>
+  <li>Company: {{ client.company|default:"-" }}</li>
+</ul>
+
+<a href="{% url 'client_list' %}" class="btn btn-primary">Back to clients</a>
+<a href="{% url 'client_update' client.pk %}" class="btn btn-warning"
+  >Edit Client</a
+>
+<a href="{% url 'client_delete' client.pk %}" class="btn btn-danger">Delete</a>
+{% endblock %}

@@ -24,13 +24,13 @@ def client_create(request):
             messages.success(request, 'Client created successfully!')
             return redirect('client_list')
         else:
-            # Form has errors - show them to the user
+            
             messages.error(request, 'Please correct the errors below.')
     else:
         form = ClientForm()
-        # Don't show error message on initial GET request
+        
 
-    return render(request, 'clients/client_form.html', {'form': form})  # Fixed: colon not comma
+    return render(request, 'clients/client_form.html', {'form': form}) 
 
 @login_required
 @admin_required
@@ -66,4 +66,4 @@ def client_delete(request, pk):
         messages.success(request, 'Client deleted successfully!')
         return redirect('client_list')
     
-    return render(request, 'clients/client_confirm_delete.html', {'client': client})
+    return render(request, 'clients/client_confirm.html', {'client': client})
