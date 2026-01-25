@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>{{ project.title }}</h2>
+
+<ul class="list-group mb-3">
+  <li class="list-group-item">
+    <strong>Client:</strong>{{ project.client.name }}
+  </li>
+  <li class="list-group-item"><strong>Status:</strong>{{ project.status }}</li>
+  <li class="list-group-item">
+    <strong>Description:</strong><br />{{ project.description|linebreaks }}
+  </li>
+</ul>
+
+{% if user.is_staff %}
+<a href="{% url 'project_update' project.pk %}" class="btn btn-warning">Edit</a>
+<a href="{% url 'project_delete' project.pk %}" class="btn btn-danger"
+  >Delete</a
+>
+{% endif %}
+<a href="{% url 'project_list' %}" class="btn btn-secondary">Back</a>
+
+{% endblock %}
