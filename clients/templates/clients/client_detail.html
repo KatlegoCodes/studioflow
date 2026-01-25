@@ -11,4 +11,35 @@
   >Edit Client</a
 >
 <a href="{% url 'client_delete' client.pk %}" class="btn btn-danger">Delete</a>
+
+<hr />
+
+<h4>Projects</h4>
+
+{% if projects %}
+<ul class="list-group mb-3">
+  {% for project in projects %}
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+      <strong>{{ project.title }}</strong><br />
+      <small class="text-muted">{{ project.status }}</small>
+    </div>
+    <a
+      href="{% url 'project_detail' project.pk %}"
+      class="btn btn-sm btn-outline-secondary"
+      >View</a
+    >
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="text-muted">No projects for this client yet.</p>
+{% endif %}
+
+<a
+  href="{% url 'project_create' %}?client={{ client.pk }}"
+  class="btn btn-primary"
+  >+ Add Project</a
+>
+
 {% endblock %}

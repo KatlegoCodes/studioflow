@@ -14,6 +14,7 @@ class Project(models.Model):
     client = models.ForeignKey(
         Client,
         on_delete=models.CASCADE,
+        related_name='projects'
     )
 
     description = models.TextField()

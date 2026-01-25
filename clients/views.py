@@ -36,7 +36,11 @@ def client_create(request):
 @admin_required
 def client_detail(request, pk):
     client = get_object_or_404(Client, pk=pk)
-    return render(request, 'clients/client_detail.html', {'client': client})
+    projects = client.projects.all()
+    return render(request, 'clients/client_detail.html', {
+        'client': client,
+        'projects': projects,
+    })
 
 @login_required
 @admin_required
