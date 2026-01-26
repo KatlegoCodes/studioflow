@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% block content %}
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="row mb-4">
+  <div class="col-md-6">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">Clients</h5>
+        <p class="display-6">{{ client_count }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">Projects</h5>
+        <p class="display-6">{{ project_count }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h4>Recent Projects</h4>
+
+<ul class="list-group">
+  {% for project in recent_projects %}
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+      <strong>{{ project.title }}</strong><br />
+      <small class="text-muted">{{ project.client.name }}</small>
+    </div>
+    <a
+      href="{% url 'project_detail' project.pk %}"
+      class="btn btn-sm btn-outline-secondary"
+      >View</a
+    >
+  </li>
+  {% empty %}
+  <li class="list-group-item text-muted">No Projects yet</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
