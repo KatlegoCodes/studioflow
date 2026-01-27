@@ -41,5 +41,29 @@
   class="btn btn-primary"
   >+ Add Project</a
 >
+<hr />
 
-{% endblock %}
+<h4>Invoices</h4>
+
+{% if invoices %}
+<ul class="list-group mb-3">
+  {% for invoice in invoices %}
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+      <strong>#{{ invoice.id }}</strong>
+      <span class="badge bg-secondary ms-2"
+        >{{ invoice.get_status_display }}</span
+      ><br />
+      <small class="text-muted">Due {{ invoice.due_date }}</small>
+    </div>
+    <a
+      href="{% url 'invoice_detail' invoice.pk %}"
+      class="btn btn-sm btn-outline-secondary"
+      >View</a
+    >
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="text-muted">No invoices yet.</p>
+{% endif %} {% endblock %}

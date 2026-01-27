@@ -37,9 +37,11 @@ def client_create(request):
 def client_detail(request, pk):
     client = get_object_or_404(Client, pk=pk)
     projects = client.projects.all()
+    invoices = client.invoices.order_by('-created_at')
     return render(request, 'clients/client_detail.html', {
         'client': client,
         'projects': projects,
+        'invoices': invoices,
     })
 
 @login_required

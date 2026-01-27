@@ -41,4 +41,28 @@
   {% endfor %}
 </ul>
 
-{% endblock %}
+<hr />
+
+<h4>Unpaid invoices</h4>
+
+<ul>
+  {% for invoice in unpaid_invoices %}
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+      <strong>#{{ invoice.id }}</strong>
+      <small class="text-muted"> {{invoice.client.name}}</small><br />
+      <span class="badge bg-warning text-dark"
+        >{{ invoices.get_status_display }}</span
+      >
+      <small class="text-muted">Due {{invoice.due_date}}</small>
+    </div>
+    <a
+      href="{% url 'invoice_detail' invoice.pk %}"
+      class="btn btn-sm btn-outline-secondary"
+      >View</a
+    >
+  </li>
+  {% empty %}
+  <li class="list-group-item text-muted">All invoices are paid 🎉</li>
+</ul>
+{% endfor %} {% endblock %}
