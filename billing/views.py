@@ -51,3 +51,15 @@ def invoice_update(request, pk):
         'form': form,
         'title': 'Edit Invoice'
     })
+
+@login_required
+def invoice_delete(request, pk):
+    invoice = get_object_or_404(Invoice, pk=pk)
+
+    if request.method == 'POST':
+        invoice.delete()
+        return redirect('invoice_list')
+    
+    return render(request, 'billing/invoice_confirm_delete.html', {
+        'invoice': invoice
+    })

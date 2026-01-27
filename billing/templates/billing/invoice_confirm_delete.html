@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h4 class="text-danger">Delete Invoice</h4>
+
+    <p>
+      Are you sure you wanr to delete
+      <strong>Invoice #{{ invoice.id }}</strong> for
+      <strong>{{ invoice.client.name }}</strong>
+    </p>
+
+    <form method="post">
+      {% csrf_token %}
+      <a href="{% url 'invoice_list' %}" class="btn btn-secondary">Cancel</a>
+      <button class="btn btn-danger" type="submit">Delete</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
