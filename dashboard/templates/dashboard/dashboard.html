@@ -33,8 +33,9 @@
     <a
       href="{% url 'project_detail' project.pk %}"
       class="btn btn-sm btn-outline-secondary"
-      >View</a
     >
+      View
+    </a>
   </li>
   {% empty %}
   <li class="list-group-item text-muted">No Projects yet</li>
@@ -45,24 +46,30 @@
 
 <h4>Unpaid invoices</h4>
 
-<ul>
+<ul class="list-group">
   {% for invoice in unpaid_invoices %}
   <li class="list-group-item d-flex justify-content-between align-items-center">
     <div>
       <strong>#{{ invoice.id }}</strong>
-      <small class="text-muted"> {{invoice.client.name}}</small><br />
-      <span class="badge bg-warning text-dark"
-        >{{ invoices.get_status_display }}</span
+      <small class="text-muted"> {{ invoice.client.name }}</small><br />
+
+      <span
+        class="badge {% if invoice.status == 'draft' %}bg-secondary {% elif invoice.status == 'sent' %}bg-primary {% elif invoice.status == 'overdue' %}bg-danger {% else %}bg-warning text-dark{% endif %}"
       >
-      <small class="text-muted">Due {{invoice.due_date}}</small>
+        {{ invoice.get_status_display }}
+      </span>
+      <small class="text-muted">Due {{ invoice.due_date|date:"M d, Y" }}</small>
     </div>
     <a
       href="{% url 'invoice_detail' invoice.pk %}"
       class="btn btn-sm btn-outline-secondary"
-      >View</a
     >
+      View
+    </a>
   </li>
   {% empty %}
   <li class="list-group-item text-muted">All invoices are paid 🎉</li>
+  {% endfor %}
 </ul>
-{% endfor %} {% endblock %}
+
+{% endblock %}
