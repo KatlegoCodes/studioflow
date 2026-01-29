@@ -35,7 +35,10 @@ class Invoice(models.Model):
 
     @property
     def is_overdue(self):
-        return self.status != 'paid' and self.due_date < timezone.now().date()
+        if self.is_overdue:
+            return (timezone.now().date() > self.due_date).days
+        return 0
+        
 
     def total_amount(self):
         return sum(item.total() for item in self.items.all())
@@ -59,7 +62,3 @@ class InvoiceItem(models.Model):
 
     def __str__(self):
         return self.description
-
-    
-
-    

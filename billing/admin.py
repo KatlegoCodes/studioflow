@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Invoice, InvoiceItem
 
-class InvoiceItemline(admin.TabularInline):
+class InvoiceItemInline(admin.TabularInline):
     model = InvoiceItem
     extra = 1
 
@@ -10,7 +10,7 @@ class InvoiceAdmin(admin.ModelAdmin):
     list_display = ('id', 'client', 'project','status', 'due_date')
     list_filter = ('status',)
     search_fields = ('client__name', 'project__name')
-    inlines = [InvoiceItemline]
+    inlines = [InvoiceItemInline]
 
 @admin.register(InvoiceItem)
 class InvoiceItemAdmin(admin.ModelAdmin):
