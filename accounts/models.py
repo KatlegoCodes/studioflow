@@ -14,7 +14,8 @@ class Profile(models.Model):
     )
     role = models.CharField(
         max_length=10,
-        choices=ROLE_CHOICES
+        choices=ROLE_CHOICES,
+        default='staff'
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
