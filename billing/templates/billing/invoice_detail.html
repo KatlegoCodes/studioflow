@@ -1,33 +1,61 @@
 {% extends 'base.html' %} {% block content %}
 
-<h2>Invoice #{{ invoice.id }}</h2>
+<div class="mb-4">
+  <h2>Invoice #{{ invoice.id }}</h2>
 
-<ul class="list-group mb-3">
-  <li class="list-group-item">
-    <strong>Client:</strong> {{ invoice.client.name }}
-  </li>
+  <p class="mb-1"><strong>Client:</strong> {{ invoice.client.name }}</p>
+  <p class="mb-1">
+    <strong>Project:</strong> {{ invoice.project|default:"-" }}
+  </p>
+  <p class="mb-1">
+    <strong>Status:</strong
+    ><span
+      class="badge {% if invoice.status == 'paid' %}bg-success{% else %}bg-secondary{% endif %}"
+    >
+      {{ invoice.get_status_display }}</span
+    >
+  </p>
+  <p class="mb-1"><strong>Due Date:</strong> {{ invoice.due_date }}</p>
+</div>
 
-  {% if invoice.project %}
-  <li class="list-group-item">
-    <strong>Project:</strong> {{ invoice.project.name }}
-  </li>
-  {% endif %}
+<hr />
 
-  <li class="list-group-item">
-    <strong>Amount:</strong> R {{ invoice.total_amount|floatformat:2 }}
-  </li>
+<h4>Line Items</h4>
 
-  <li class="list-group-item">
-    <strong>Status:</strong> {{ invoice.get_status_display }}
-  </li>
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th class="text-end">Qty</th>
+      <th class="text-end">Unit Price</th>
+      <th class="text-end">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td>{{item.description}}</td>
+      <td class="text-end">{{item.quantity}}</td>
+      <td class="text-end">R{{item.unit_price}}</td>
+      <td class="text-end">R{{item.total}}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="4" class="text-muted">No line items</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
-  <li class="list-group-item">
-    <strong>Due Date:</strong> {{ invoice.due_date }}
-  </li>
-</ul>
+<hr />
 
-{% if user.is_staff %}
-<a href="{% url 'invoice_update' invoice.pk %}" class="btn btn-secondary">
-  Edit Invoice
-</a>
+<div class="d-flex justify-content-end">
+  <h4>Total: R{{ invoice.total_amount|floatformat:2 }}</h4>
+</div>
+
+{% if user.is_staff and invoice.status != 'paid' %}
+<form method="post" action="{% url 'invoice_mark_paid' invoice.pk %}">
+  {% csrf_token %}
+  <button class="btn btn-success">Mark as paid</button>
+</form>
 {% endif %} {% endblock %}

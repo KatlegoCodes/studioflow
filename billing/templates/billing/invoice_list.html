@@ -40,7 +40,6 @@
 
       <!-- Overdue Badge -->
       <td>
-        {% if invoice.is_overdue %}
         <span class="badge bg-danger">
           {{ invoice.days_overdue }} day{{ invoice.days_overdue|pluralize }}
           overdue

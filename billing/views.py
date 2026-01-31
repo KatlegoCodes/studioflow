@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from accounts.decorators import admin_required
+from django.contrib import messages
 
 from .models import Invoice
 from .forms import InvoiceForm
@@ -63,3 +64,21 @@ def invoice_delete(request, pk):
     return render(request, 'billing/invoice_confirm_delete.html', {
         'invoice': invoice
     })
+
+@login_required
+def invoice_mark_paid(request, pk):
+    invoice = get_object_or_404(Invoice, pk=pk)
+
+    if not request.user.is_staff:
+        messages.error(request,'You do not have permission to mark invoices as paid')
+        return redirect('invoice_detail', pk=pk)
+    
+    if invoice.status == 'paid':
+        messages.info(request, 'Invoice is already marked as paid.')
+        return redirect('invoice_detail', pk=pk)
+    
+    invoice.status = 'paid'
+    invoice.save()
+
+    messages.success(request, 'Invoice marked as paid')
+    return redirect('invoice_detail', pk=pk)
