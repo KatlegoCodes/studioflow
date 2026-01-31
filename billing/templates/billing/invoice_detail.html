@@ -56,6 +56,14 @@
 {% if user.is_staff and invoice.status != 'paid' %}
 <form method="post" action="{% url 'invoice_mark_paid' invoice.pk %}">
   {% csrf_token %}
+  <a
+    href="{% url 'invoice_update' invoice.pk %}"
+    class="btn btn-outline-primary"
+    >Edit</a
+  >
   <button class="btn btn-success">Mark as paid</button>
+  <a href="{% url 'invoice_delete' invoice.pk %}" class="btn btn-outline-danger"
+    >Delete</a
+  >
 </form>
 {% endif %} {% endblock %}

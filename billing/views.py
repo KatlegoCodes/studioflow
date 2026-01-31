@@ -40,30 +40,50 @@ def invoice_create(request):
 def invoice_update(request, pk):
     invoice = get_object_or_404(Invoice, pk=pk)
 
+    if invoice.status == 'paid':
+        messages.error(request, 'Paid invoices cannot be edited')
+        return redirect('invoice_detail', pk=pk)
+    
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to edit invoices')
+        return redirect('invoice_detail', pk=pk)
+    
     if request.method == 'POST':
         form = InvoiceForm(request.POST, instance=invoice)
         if form.is_valid():
             form.save()
-            return redirect('invoice_detail', pk=invoice.pk)
+            messages.success(request, 'Invoice updated')
+            return redirect('invoice_detail', pk=pk)
     else:
         form = InvoiceForm(instance=invoice)
 
-    return render(request, 'billing/invoice_form.html', {
-        'form': form,
-        'title': 'Edit Invoice'
-    })
+    return render(request, 'billing/invoice_form.html', {'form': form})
+
 
 @login_required
 def invoice_delete(request, pk):
     invoice = get_object_or_404(Invoice, pk=pk)
 
+    if invoice.status == 'paid':
+        messages.error(request, 'Paid invoices cannot be deleted')
+        return redirect('invoice_detail', pk=pk)
+    
+    if request.user.is_staff:
+        messages.error(request, 'You do not have permission to delete invoices')
+        return redirect('invoice_detail', pk=pk)
+
     if request.method == 'POST':
         invoice.delete()
+        messages.success(request, 'Invoice deleted')
         return redirect('invoice_list')
     
+    
+
     return render(request, 'billing/invoice_confirm_delete.html', {
         'invoice': invoice
     })
+
+    
 
 @login_required
 def invoice_mark_paid(request, pk):
