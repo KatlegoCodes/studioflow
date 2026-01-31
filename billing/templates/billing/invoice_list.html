@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h2>Invoices</h2>
-  {% if user.is_staff %}
+  {% if request.user.profile.role == 'admin' %}
   <a href="{% url 'invoice_create' %}" class="btn btn-primary">+ New Invoice</a>
   {% endif %}
 </div>
