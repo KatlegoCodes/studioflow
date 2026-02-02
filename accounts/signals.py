@@ -6,4 +6,12 @@ from .models import Profile
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance)
+        profile = Profile.objects.create(user=instance, role="staff")
+
+        if profile.role == "admin":
+            instance.is_staff = True
+            instance.is_superuser = True
+        else:
+            instance.is_staff = False
+
+        instance.save()

@@ -65,5 +65,9 @@
   <a href="{% url 'invoice_delete' invoice.pk %}" class="btn btn-outline-danger"
     >Delete</a
   >
+
+  <a href="{% url 'invoice_print' invoice.pk %}" class="btn btn-dark"
+    >Print Invoice</a
+  >
 </form>
 {% endif %} {% endblock %}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice #{{ invoice.id }}</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 40px;
+      }
+
+      .header,
+      .footer {
+        text-align: center;
+      }
+
+      .invoice-box {
+        max-width: 800px;
+        margin: auto;
+      }
+
+      table th,
+      table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+      }
+
+      table th {
+        background: #f5f5f5;
+      }
+
+      .right {
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invoice-box">
+      <div class="header">
+        <h1>INVOICE</h1>
+        <p>Invoice #: {{ invoice.id }}</p>
+        <p>Date : {{ invoice.created_at|date:'M d, Y' }}</p>
+        <p>Due : {{ invoice.due_date|date:'M d, Y' }}</p>
+      </div>
+
+      <hr />
+
+      <h3>Bill To:</h3>
+      <p>
+        <strong>{{ invoice.client.name }}</strong><br />
+        {{ invoice.client.email }} {{ invoice.client.phone }}
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in invoice.items.all %}
+          <tr>
+            <td>{{ item.description }}</td>
+            <td>{{ item.quantity }}</td>
+            <td class="right">${{ item.unit_price }}</td>
+            <td class="right">${{ item.total }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <h3 class="right">
+        Grand Total: ${{ invoice.total_amount|floatformat:2 }}
+      </h3>
+
+      <div class="footer">
+        <p>Thank you for business!</p>
+      </div>
+    </div>
+  </body>
+</html>

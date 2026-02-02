@@ -68,7 +68,7 @@ def invoice_delete(request, pk):
         messages.error(request, 'Paid invoices cannot be deleted')
         return redirect('invoice_detail', pk=pk)
     
-    if request.user.is_staff:
+    if not request.user.is_staff:
         messages.error(request, 'You do not have permission to delete invoices')
         return redirect('invoice_detail', pk=pk)
 
@@ -77,8 +77,6 @@ def invoice_delete(request, pk):
         messages.success(request, 'Invoice deleted')
         return redirect('invoice_list')
     
-    
-
     return render(request, 'billing/invoice_confirm_delete.html', {
         'invoice': invoice
     })
@@ -102,3 +100,9 @@ def invoice_mark_paid(request, pk):
 
     messages.success(request, 'Invoice marked as paid')
     return redirect('invoice_detail', pk=pk)
+
+@login_required
+@admin_required
+def invoice_print(request, pk):
+    invoice = get_object_or_404(Invoice, pk=pk)
+    return render(request, 'billing/invoice_print.html', {'invoice': invoice})
