@@ -138,7 +138,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # ADD THIS LINE
-STATICFILES_DIRS = [BASE_DIR / 'static']  # Keep your existing static directory
+
+import os
+STATICFILES_DIRS = []
+if os.path.exists(BASE_DIR / 'static'):
+    STATICFILES_DIRS.append(BASE_DIR / 'static')
 
 # Whitenoise storage
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -148,6 +152,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Security settings for production
+CSRF_TRUSTED_ORIGINS = ['https://*.railway.app']
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
