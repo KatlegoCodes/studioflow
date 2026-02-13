@@ -1,17 +1,25 @@
 {% extends 'base.html' %} {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-5">
-    <div class="card">
-      <div class="card-body">
-        <h3 class="">Login</h3>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h3>Login to StudioFlow</h3>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %} {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
 
-        <form method="post">
-          {% csrf_token %} {{ form.as_p }}
-          <button type="submit" class="btn btn-primary w-100">login</button>
-        </form>
+          <!-- Sign Up Button Section -->
+          <div class="mt-3 text-center">
+            <p>Don't have an account?</p>
+            <a href="{% url 'signup' %}" class="btn btn-success">Sign Up</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
 {% endblock %}

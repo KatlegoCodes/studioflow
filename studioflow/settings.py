@@ -23,6 +23,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-)uckj581_xw6$1o4vom2!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', '').lower() == 'true'
 
+# TEMPORARY - Force debug mode for testing
+DEBUG = True
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 if not ALLOWED_HOSTS[0]:
     ALLOWED_HOSTS = ['*']  # For Railway deployment, will update later with your domain
@@ -166,3 +172,12 @@ if not DEBUG:
 LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/accounts/login/"
+
+# At the VERY BOTTOM of settings.py - add this override for development
+import sys
+if 'runserver' in sys.argv:
+    DEBUG = True
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    print("🔧 Development mode: HTTPS redirect disabled")
