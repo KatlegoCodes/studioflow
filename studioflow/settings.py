@@ -24,10 +24,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-)uckj581_xw6$1o4vom2!
 DEBUG = os.environ.get('DEBUG', '').lower() == 'true'
 
 # TEMPORARY - Force debug mode for testing
-DEBUG = True
-SECURE_SSL_REDIRECT = False
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 if not ALLOWED_HOSTS[0]:
@@ -160,7 +157,9 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Security settings for production
-CSRF_TRUSTED_ORIGINS = ['https://*.railway.app']
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com'
+]
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
@@ -176,7 +175,6 @@ LOGOUT_REDIRECT_URL = "/accounts/login/"
 # At the VERY BOTTOM of settings.py - add this override for development
 import sys
 if 'runserver' in sys.argv:
-    DEBUG = True
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
